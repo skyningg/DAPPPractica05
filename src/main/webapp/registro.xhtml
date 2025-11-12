@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <title>Registro de Usuario</title>
+</h:head>
+
+<h:body style="font-family: Arial; text-align:center; margin-top:50px;">
+    <h:form id="registroForm" style="max-width:400px; margin:auto; border:1px solid #ccc; padding:20px; border-radius:8px; box-shadow: 0 0 10px #aaa;">
+        <h2 style="margin-bottom:20px;">📝 Crear Usuario</h2>
+
+        <h:panelGrid columns="2" cellpadding="5" style="margin:auto; width:100%;">
+            <h:outputLabel for="usuarioReg" value="Usuario:" />
+            <h:inputText id="usuarioReg" value="#{loginBean.usuarioReg}" required="true"/>
+
+            <h:outputLabel for="contrasenaReg" value="Contraseña:" />
+            <h:inputSecret id="contrasenaReg" value="#{loginBean.contrasenaReg}" required="true"/>
+
+            <h:outputLabel for="nombre" value="Nombre:" />
+            <h:inputText id="nombre" value="#{loginBean.nombre}" />
+
+            <h:outputLabel for="telefono" value="Teléfono:" />
+            <h:inputText id="telefono" value="#{loginBean.telefono}" />
+
+            <h:outputLabel for="direccion" value="Dirección:" />
+            <h:inputText id="direccion" value="#{loginBean.direccion}" />
+        </h:panelGrid>
+
+        <br/>
+
+        <h:commandButton value="Crear Usuario" 
+                         action="#{loginBean.crearUsuario}" 
+                         style="padding:8px 20px; font-weight:bold; background-color:#2196F3; color:white; border:none; border-radius:4px; cursor:pointer;" />
+
+        <br/><br/>
+        <h:outputLink value="login.xhtml" style="color:#4CAF50;">🔐 Volver a iniciar sesión</h:outputLink>
+
+        <h:messages globalOnly="true" style="color:red; font-weight:bold;" />
+    </h:form>
+</h:body>
+</html>

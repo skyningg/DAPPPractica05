@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Gestión de Empleados</title>
+</h:head>
+<h:body style="background-color:#f5f5f5; font-family: Arial, sans-serif;">
+
+    <h:form id="empleadosForm">
+        <p:growl id="msgs" life="4000" sticky="false" />
+
+        <!-- Título + Botones -->
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+            <h2 style="color:#FF9800;">Lista de Empleados</h2>
+
+            <div>
+                <!-- Agregar empleado -->
+                <p:commandButton value="Agregar Empleado" icon="pi pi-plus" 
+                                 styleClass="ui-button-success" 
+                                 update=":dlgForm" 
+                                 actionListener="#{empleadoBean.nuevo}" 
+                                 oncomplete="PF('dlg').show()" />
+
+                <!-- Cerrar sesión -->
+                <p:commandButton value="Cerrar Sesión" icon="pi pi-sign-out" 
+                                 styleClass="ui-button-danger" 
+                                 action="#{loginBean.cerrarSesion}" />
+            </div>
+        </div>
+
+        <!-- Tabla de empleados -->
+        <p:dataTable id="tabla" value="#{empleadoBean.empleados}" var="e" 
+                     rowHover="true" 
+                     paginator="true" rows="8" 
+                     style="background:white; border-radius:10px; box-shadow:0px 2px 6px rgba(0,0,0,0.15);">
+
+            <p:column headerText="ID" style="width:80px; text-align:center;">
+                <h:outputText value="#{e.clave}" />
+            </p:column>
+
+            <p:column headerText="Nombre">
+                <h:outputText value="#{e.nombre}" style="font-weight:bold;" />
+            </p:column>
+
+            <p:column headerText="Acciones" style="width:180px; text-align:center;">
+                <p:commandButton icon="pi pi-pencil" styleClass="ui-button-warning ui-button-rounded" 
+                                 update=":dlgForm" oncomplete="PF('dlg').show()" title="Editar">
+                    <f:setPropertyActionListener value="#{e}" target="#{empleadoBean.seleccionado}" />
+                </p:commandButton>
+                <p:commandButton icon="pi pi-trash" styleClass="ui-button-danger ui-button-rounded" 
+                                 actionListener="#{empleadoBean.eliminar}" 
+                                 update=":empleadosForm:tabla :empleadosForm:msgs" title="Eliminar">
+                    <f:setPropertyActionListener value="#{e}" target="#{empleadoBean.seleccionado}" />
+                </p:commandButton>
+            </p:column>
+        </p:dataTable>
+    </h:form>
+
+    <!-- Dialogo de crear/editar empleado -->
+    <p:dialog header="Empleado" widgetVar="dlg" modal="true" resizable="false" 
+              style="border-radius:10px;" closable="true">
+        <h:form id="dlgForm">
+            <h:panelGrid columns="2" columnClasses="label,value" style="margin-top:10px;">
+                <h:outputLabel value="Nombre:" for="nombre" style="font-weight:bold;" />
+                <p:inputText id="nombre" value="#{empleadoBean.seleccionado.nombre}" style="width:100%;"/>
+
+                <h:outputLabel value="Dirección:" for="direccion" style="font-weight:bold;" />
+                <p:inputText id="direccion" value="#{empleadoBean.seleccionado.direccion}" style="width:100%;"/>
+
+                <h:outputLabel value="Teléfono:" for="telefono" style="font-weight:bold;" />
+                <p:inputText id="telefono" value="#{empleadoBean.seleccionado.telefono}" style="width:100%;"/>
+            </h:panelGrid>
+
+            <div style="margin-top:16px; text-align:right;">
+                <p:commandButton value="Guardar" icon="pi pi-check" 
+                                 actionListener="#{empleadoBean.guardar}" 
+                                 update=":empleadosForm:tabla :empleadosForm:msgs" 
+                                 oncomplete="PF('dlg').hide()" styleClass="ui-button-success"/>
+                <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('dlg').hide();return false;" 
+                                 styleClass="ui-button-secondary"/>
+            </div>
+        </h:form>
+    </p:dialog>
+
+</h:body>
+</html>
